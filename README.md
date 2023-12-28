@@ -1,66 +1,111 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Laravel Social Media API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This document outlines the API for a Laravel-based social media application. 
 
-## About Laravel
+**Features:**
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+* User registration and login
+* Profile management
+* Following and unfollowing users
+* Posting and managing content (text, images, videos)
+* Liking and commenting on content
+* Chatting with other users
+* Notifications for new activities
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**Installation:**
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. Clone the repository.
+2. Run `composer install` to install dependencies.
+3. Copy the `.env.example` file to `.env` and configure database and application settings.
+4. Run `php artisan migrate` to create database tables.
+5. Run `php artisan key:generate` to generate an application key.
+6. Run `php artisan serve` to start the development server.
 
-## Learning Laravel
+**API Endpoints:**
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+* **Users:**
+    * `/users` (GET): Get all users.
+    * `/users/{id}` (GET): Get specific user by ID.
+    * `/users/{id}/posts` (GET): Get all posts of a specific user.
+    * `/users/{id}/followers` (GET): Get all followers of a specific user.
+    * `/users/{id}/following` (GET): Get all users followed by a specific user.
+    * `/register` (POST): Register a new user.
+    * `/login` (POST): Login a user.
+    * `/users/{id}` (PUT): Update user profile.
+    * `/users/{id}` (DELETE): Delete a user.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+* **Posts:**
+    * `/posts` (GET): Get all posts.
+    * `/posts/{id}` (GET): Get specific post by ID.
+    * `/posts` (POST): Create a new post.
+    * `/posts/{id}` (PUT): Update a post.
+    * `/posts/{id}` (DELETE): Delete a post.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+* **Likes:**
+    * `/posts/{id}/likes` (GET): Get all likes for a post.
+    * `/posts/{id}/like` (POST): Like a post.
+    * `/posts/{id}/unlike` (DELETE): Unlike a post.
 
-## Laravel Sponsors
+* **Comments:**
+    * `/posts/{id}/comments` (GET): Get all comments for a post.
+    * `/posts/{id}/comments` (POST): Create a new comment on a post.
+    * `/posts/{id}/comments/{comment_id}` (PUT): Update a comment.
+    * `/posts/{id}/comments/{comment_id}` (DELETE): Delete a comment.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+* **Chat:**
+    * `/chat/messages/{user_id}` (GET): Get all messages with a specific user.
+    * `/chat/messages` (POST): Send a new message.
 
-### Premium Partners
+* **Notifications:**
+    * `/notifications/{user_id}` (GET): Get all notifications for a user.
+    * `/notifications/{id}` (PUT): Mark a notification as read.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+**Authentication:**
 
-## Contributing
+The API uses JWT (JSON Web Token) for authentication. A token is generated when a user logs in and should be sent with subsequent requests in the Authorization header.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**Example Usage:**
 
-## Code of Conduct
+1. Register a new user:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```
+POST /register
 
-## Security Vulnerabilities
+Content-Type: application/json
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+{
+  "name": "John Doe",
+  "email": "johndoe@example.com",
+  "password": "secret"
+}
+```
 
-## License
+2. Get all posts:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```
+GET /posts
+
+Authorization: Bearer <token>
+```
+
+3. Create a new post:
+
+```
+POST /posts
+
+Authorization: Bearer <token>
+
+Content-Type: application/json
+
+{
+  "body": "This is my first post!"
+}
+```
+
+**Additional Notes:**
+
+* This is a basic example, and additional endpoints and functionality can be added as needed.
+* Error responses will be returned in JSON format with an appropriate status code.
+* Refer to the Laravel documentation for further information on API development.
+
+**Feel free to contribute to this API and make it your own!**
