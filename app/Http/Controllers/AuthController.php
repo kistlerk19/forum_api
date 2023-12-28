@@ -5,26 +5,28 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRegisterRequest;
+use App\Services\UserService;
 
 class AuthController extends Controller
 {
+    protected $userService;
+    
+    public function __construct(UserService $userService){
+        $this->userService = $userService;
+    }
+
     public function register(UserRegisterRequest $request)
     {
-        $user = User::create([
-            "name"=> $request->name,
-            "username"=> $request->username,
-            "email"=> $request->email,
-            "password"=> bcrypt($request->password),
-        ]);
+        $user = $this->userService->registerUser($request->all());
 
         $token = $user->createToken("Harsia")->accessToken;
 
-        // dd($token);
-
         return response()->json([
-            "success" => true,
-            "user"=> $user,
-            "token"=> $token,
+            "data" => [
+                "success" => true,
+                "user"=> $user,
+                "token"=> $token,
+            ]
         ]);
     }
 }
