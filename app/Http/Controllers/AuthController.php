@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRegisterRequest;
 use App\Services\UserService;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -51,8 +52,16 @@ class AuthController extends Controller
         return response()->json([
             "message" => "Unauthorised!!",
         ], 401);
+    }
 
-        
+
+    public function me()
+    {
+        $user = Auth::user();
+
+        return response()->json([
+            "user" => $user,
+        ]);
     }
 
 }

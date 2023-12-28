@@ -25,5 +25,16 @@ use Illuminate\Support\Facades\Route;
 // Route::get("hello", [TestController::class,"index"]);
 // Route::post("hello", [TestController::class,"create"]);
 
-Route::post("/register", [AuthController::class, "register"])->name("register");
-Route::post("/login", [AuthController::class, "login"])->name("login");
+Route::group([
+    "prefix"=> "/v1/users",
+    "middleware"=> "api",
+], function () {
+    Route::get("register", [AuthController::class,"register"]);
+    Route::post("login", [AuthController::class, "login"]);
+    Route::group([
+        "middleware" => "auth:api",
+    ], function () {
+        Route::get("me", [AuthController::class,"me"]);
+    });
+});
+
