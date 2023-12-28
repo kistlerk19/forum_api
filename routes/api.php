@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,5 +22,7 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::get("hello", [TestController::class,"index"]);
-Route::post("hello", [TestController::class,"create"]);
+// Route::get("hello", [TestController::class,"index"]);
+// Route::post("hello", [TestController::class,"create"]);
+
+Route::post("/register", [AuthController::class, "register"])->name("register");
