@@ -39,9 +39,9 @@ class AuthController extends Controller
         $token = $newUser->createToken("Harsia Access");
 
         return response()->json([
-            "access-token" => $token,
-            "token-type" => "Bearer",
-            "expiry-date"=> $token->token->expires_at,
+            "access token" => $token->accessToken,
+            "token type" => "Bearer",
+            "expiry date"=> $token->token->expires_at,
             "user" => $newUser,
         ]);
     }
