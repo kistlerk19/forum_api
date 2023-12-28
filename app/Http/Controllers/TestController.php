@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\TestPostControllerRequest;
 
 class TestController extends Controller
 {
@@ -14,7 +15,7 @@ class TestController extends Controller
         return $var . " " . $var1;
     }
     
-    public function create(Request $request) 
+    public function create(TestPostControllerRequest $request) 
     {
         $firstName = $request->firstName;
         $lastName = $request->lastName;
