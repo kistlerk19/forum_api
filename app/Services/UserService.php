@@ -48,6 +48,6 @@ class UserService
             return $user;
         }
 
-        return "Couldn't sign you in";
+        return false;
     }
 }

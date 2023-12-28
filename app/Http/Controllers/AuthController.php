@@ -36,14 +36,23 @@ class AuthController extends Controller
     {
         $newUser = $this->userService->login($request->all());
 
-        $token = $newUser->createToken("Harsia Access");
+        if($newUser)
+        {
+            $token = $newUser->createToken("Harsia Access");
+
+            return response()->json([
+                "access token" => $token->accessToken,
+                "token type" => "Bearer",
+                "expiry date"=> $token->token->expires_at,
+                "user" => $newUser,
+            ]);
+        }
 
         return response()->json([
-            "access token" => $token->accessToken,
-            "token type" => "Bearer",
-            "expiry date"=> $token->token->expires_at,
-            "user" => $newUser,
-        ]);
+            "message" => "Unauthorised!!",
+        ], 401);
+
+        
     }
 
 }
