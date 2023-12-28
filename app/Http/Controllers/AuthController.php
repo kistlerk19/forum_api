@@ -19,8 +19,12 @@ class AuthController extends Controller
 
         $token = $user->createToken("Harsia")->accessToken;
 
-        dd($token);
+        // dd($token);
 
-        return $user;
+        return response()->json([
+            "success" => true,
+            "user"=> $user,
+            "token"=> $token,
+        ]);
     }
 }
