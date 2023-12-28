@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,8 @@ use Illuminate\Support\Facades\Route;
 // Route::get("hello", [TestController::class,"index"]);
 // Route::post("hello", [TestController::class,"create"]);
 
+// Authentication Routes
+
 Route::group([
     "prefix"=> "/v1/users",
     "middleware"=> "api",
@@ -34,7 +37,15 @@ Route::group([
     Route::group([
         "middleware" => "auth:api",
     ], function () {
-        Route::get("me", [AuthController::class,"me"]);
+        //@todo password reset
     });
 });
 
+// User Routes
+
+Route::group([
+    "middleware" => "auth:api",
+    "prefix" => "/v1/user",
+], function () {
+    Route::get("me", [UserController::class,"me"]);
+});
