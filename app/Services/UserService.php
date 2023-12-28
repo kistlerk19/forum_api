@@ -38,4 +38,16 @@ class UserService
 
         return $newUser;
     }
+
+    public function login(array $data)
+    {
+        if (Auth::attempt(["email"=> $data["email"],"password"=> $data["password"]]))
+        {
+            $user = Auth::user();
+            // $user->assignRole($data["role"]);
+            return $user;
+        }
+
+        return "Couldn't sign you in";
+    }
 }

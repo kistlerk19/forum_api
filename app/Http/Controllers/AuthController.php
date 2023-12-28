@@ -15,6 +15,7 @@ class AuthController extends Controller
         $this->userService = $userService;
     }
 
+    // Register user Function
     public function register(UserRegisterRequest $request)
     {
         $user = $this->userService->registerUser($request->all());
@@ -29,4 +30,20 @@ class AuthController extends Controller
             ]
         ]);
     }
+
+    // User Login Function
+    public function login(Request $request)
+    {
+        $newUser = $this->userService->login($request->all());
+
+        $token = $newUser->createToken("Harsia Access");
+
+        return response()->json([
+            "access-token" => $token,
+            "token-type" => "Bearer",
+            "expiry-date"=> $token->token->expires_at,
+            "user" => $newUser,
+        ]);
+    }
+
 }
