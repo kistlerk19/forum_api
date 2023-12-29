@@ -2,10 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\StatusService;
 use Illuminate\Http\Request;
 
 class StatusController extends Controller
 {
+    protected $statusService;
+
+    public function __construct(StatusService $statusService)
+    {
+        $this->statusService = $statusService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -27,7 +35,15 @@ class StatusController extends Controller
      */
     public function store(Request $request)
     {
-        dd("opop");
+        $newStatus = $this->statusService->newStatus($request->all());
+
+        return response()->json([
+            "data"=> [
+                "success" => true,
+                "message" => "Status Updated.",
+                "data"=> $newStatus,
+            ],
+        ]);
     }
 
     /**

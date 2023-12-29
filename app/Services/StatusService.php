@@ -18,6 +18,13 @@ class StatusService
 
     public function newStatus(array $data)
     {
-        //
+        $userID = Auth::user()->id;
+
+        $newData = [
+            "user_id"=> $userID,
+            "status"=> $data["status"],
+        ];
+
+        return $this->statusRepositoryContract->newStatus($newData);
     }    
 }
