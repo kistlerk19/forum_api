@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\ResponseHelper;
+use App\Mail\RegisterUserMail;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Requests\UserRegisterRequest;
 use App\Services\UserService;
+use App\Helpers\ResponseHelper;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\UserRegisterRequest;
 
 class AuthController extends Controller
 {
@@ -24,15 +26,23 @@ class AuthController extends Controller
     {
         $user = $this->userService->registerUser($request->all());
 
-        $token = $user->createToken("Harsia")->accessToken;
+        if ($user){
+            Mail::to($user->email)->send(new RegisterUserMail($user));
 
-        $data = [
-            "success" => true,
-            "user"=> $user,
-            "token"=> $token,
-        ];
+            return $this->responseHelper->success(true, "Verification Mail Sent.", $user);
+        }
 
-        return $this->responseHelper->success(true, "User created!", $data);
+        return $this->responseHelper->fail(false, "Unauthorised!", 404);
+
+        // $token = $user->createToken("Harsia")->accessToken;
+
+        // $data = [
+        //     "success" => true,
+        //     "user"=> $user,
+        //     "token"=> $token,
+        // ];
+
+        // return $this->responseHelper->success(true, "User created!", $data);
     }
 
     // User Login Function
@@ -55,7 +65,7 @@ class AuthController extends Controller
             return $this->responseHelper->success(true, "You're logged in.", $data);
         }
 
-        return $this->responseHelper->error(false, "Unauthorised!", 401);
+        return $this->responseHelper->fail(false, "Unauthorised!", 401);
     }
 
 

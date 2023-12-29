@@ -15,7 +15,7 @@ class ResponseHelper
         ]);
     }
 
-    public static function error($error, $message, $code)
+    public static function fail($error, $message, $code)
     {
         return response()->json([
             'data'=> [
