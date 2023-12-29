@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ResponseHelper;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserRegisterRequest;
@@ -11,9 +12,11 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
     protected $userService;
+    protected $responseHelper;
     
-    public function __construct(UserService $userService){
+    public function __construct(UserService $userService, ResponseHelper $responseHelper){
         $this->userService = $userService;
+        $this->responseHelper = $responseHelper;
     }
 
     // Register user Function
@@ -23,13 +26,13 @@ class AuthController extends Controller
 
         $token = $user->createToken("Harsia")->accessToken;
 
-        return response()->json([
-            "data" => [
-                "success" => true,
-                "user"=> $user,
-                "token"=> $token,
-            ]
-        ]);
+        $data = [
+            "success" => true,
+            "user"=> $user,
+            "token"=> $token,
+        ];
+
+        return $this->responseHelper->success(true, "User created!", $data);
     }
 
     // User Login Function
@@ -40,18 +43,19 @@ class AuthController extends Controller
         if($newUser)
         {
             $token = $newUser->createToken("Harsia Access");
-
-            return response()->json([
+            
+            
+            $data = [
                 "access token" => $token->accessToken,
                 "token type" => "Bearer",
                 "expiry date"=> $token->token->expires_at,
                 "user" => $newUser,
-            ]);
+            ];
+
+            return $this->responseHelper->success(true, "You're logged in.", $data);
         }
 
-        return response()->json([
-            "message" => "Unauthorised!!",
-        ], 401);
+        return $this->responseHelper->error(false, "Unauthorised!", 401);
     }
 
 
@@ -59,9 +63,7 @@ class AuthController extends Controller
     {
         $user = Auth::user();
 
-        return response()->json([
-            "user" => $user,
-        ]);
+        return $this->responseHelper->success(true,"User", $user);
     }
 
 }
