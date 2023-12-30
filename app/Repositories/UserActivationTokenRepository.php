@@ -26,8 +26,8 @@ class UserActivationTokenRepository implements UserActivationTokenRepositoryCont
         try { 
             $checkToken = UserActivationToken::where(["token"=> $code])->first();
 
-            return $checkToken;
-            // return $checkToken ? true : false;
+            // return $checkToken;
+            return $checkToken ? true : false;
         } catch (\Exception $e) {
             return $e->getMessage();
         }
