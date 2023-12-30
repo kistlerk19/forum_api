@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\RegisterUserMail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\UserService;
+use App\Mail\RegisterUserMail;
 use App\Helpers\ResponseHelper;
-use Illuminate\Support\Facades\Mail;
+use App\Mail\PasswordResetMail;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\UserRegisterRequest;
+use Illuminate\Support\Facades\Mail;
 use App\Services\PasswordResetService;
+use App\Http\Requests\UserRegisterRequest;
 use App\Services\UserActivationTokenService;
 
 class AuthController extends Controller
@@ -97,27 +98,28 @@ class AuthController extends Controller
         }
 
         $passwordResetData = $this->passwordResetService->createPasswordReset($request->email);
-        // Mail::to($request->email)->send(new PasswordResetMail($passwordResetData));
+
+        Mail::to($request->email)->send(new PasswordResetMail($passwordResetData));
 
         return $this->responseHelper->success(true, "Check Your Email for ", $passwordResetData);
     }
-    public function resetPasswordToken(Request $request)
-    {
-        $checkToken = $this->passwordResetService->checkReset($request->email, $token);
+    // public function resetPasswordToken(Request $request)
+    // {
+    //     $checkToken = $this->passwordResetService->checkReset($request->email, $token);
 
-        if (!$checkToken) {
-            return $this->responseHelper->errorResponse(false, "User email does not exist", null, 404);
-        }
+    //     if (!$checkToken) {
+    //         return $this->responseHelper->fail(false, "User email does not exist", 404);
+    //     }
 
-        $user = $this->userService->getUserByEmail($request->email);
+    //     $user = $this->userService->getUserByEmail($request->email);
 
-        $user->password = bcrypt($request->password);
-        $user->save();
+    //     $user->password = bcrypt($request->password);
+    //     $user->save();
 
-        $checkToken->delete();   
+    //     $checkToken->delete();   
 
-        return $this->responseHelper->successResponse(true, "Password was successfully changed.", $user);
-    }
+    //     return $this->responseHelper->success(true, "Password was successfully changed.", $user);
+    // }
 
 
     public function me()
