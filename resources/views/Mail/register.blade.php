@@ -6,6 +6,20 @@
     </head>
     <body class="antialiased">
         <h1>User : {{ $name }}</h1>
-        <h1>Token : {{ $token }}</h1>
+        <h1><a href="{{ $url }}">Click To Activate.</a></h1>
     </body>
 </html>
+
+
+{{-- @component('mail::message')
+# Introduction
+
+Message for : {{$name}}
+Click on the button below to confirm your account
+@component('mail::button', ['url' => $url])
+Click to Activate
+@endcomponent
+
+Thank you,<br>
+{{ config('app.name') }}
+@endcomponent --}}

@@ -40,11 +40,12 @@ class RegisterUserMail extends Mailable
 
     public function build()
     {
+        $url = url('api/v1/users/activatemail/'. $this->token);
         return $this->from('admin@trebesice.com')
                     ->view('mail.register')
                     ->with([
                         'name'=> $this->user->name,
-                        'token'=> $this->token,
+                        'url'=> $url,
                     ]);
     }
 
