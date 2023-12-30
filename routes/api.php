@@ -35,6 +35,10 @@ Route::group([
     Route::post("register", [AuthController::class,"register"]);
     Route::post("login", [AuthController::class, "login"]);
     Route::post('activatemail/{code}', [AuthController::class, 'activateEmail']);
+
+    Route::post('forgot_password', [AuthController::class, 'resetPass']);
+    Route::post('forgot_password/{token}', [AuthController::class, 'resetPasswordToken']);
+
     Route::group([
         "middleware" => "auth:api",
     ], function () {

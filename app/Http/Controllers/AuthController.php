@@ -10,6 +10,7 @@ use App\Helpers\ResponseHelper;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UserRegisterRequest;
+use App\Services\PasswordResetService;
 use App\Services\UserActivationTokenService;
 
 class AuthController extends Controller
@@ -17,14 +18,17 @@ class AuthController extends Controller
     protected $userService;
     protected $responseHelper;
     protected $userActivationTokenService;
+    protected $passwordResetService;
     
     public function __construct(
         UserService $userService, 
         ResponseHelper $responseHelper,
+        PasswordResetService $passwordResetService,
         UserActivationTokenService $userActivationTokenService,
     ){
         $this->userService = $userService;
         $this->responseHelper = $responseHelper;
+        $this->$passwordResetService = $passwordResetService;
         $this->userActivationTokenService = $userActivationTokenService;
     }
 
@@ -81,6 +85,39 @@ class AuthController extends Controller
         }
 
         return $this->responseHelper->fail(false, "Unauthorised!", 401);
+    }
+
+
+    public function resetPass(Request $request)
+    {
+        $checkUserEmail = $this->userService->checkEmail($request->email);
+
+        if (!$checkUserEmail) {
+            return $this->responseHelper->fail(false, "User email does not exist", 404);
+        }
+        dd("we got here");
+
+        $passwordResetData = $this->passwordResetService->createPasswordReset($request->email);
+        Mail::to($request->email)->send(new PasswordResetMail($passwordResetData));
+
+        return $this->responseHelper->success(true, "Check Your Email", $passwordResetData);
+    }
+    public function resetPasswordToken(Request $request)
+    {
+        $checkToken = $this->passwordResetService->checkReset($request->email, $token);
+
+        if (!$checkToken) {
+            return $this->responseHelper->errorResponse(false, "User email does not exist", null, 404);
+        }
+
+        $user = $this->userService->getUserByEmail($request->email);
+
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        $checkToken->delete();   
+
+        return $this->responseHelper->successResponse(true, "Password was successfully changed.", $user);
     }
 
 
