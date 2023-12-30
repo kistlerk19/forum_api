@@ -46,12 +46,12 @@ class AuthController extends Controller
 
     }
 
-    // public function activateEmail($code)
-    // {
-    //     $checkToken = $this->userActivationTokenService->checkToken($code);
+    public function activateEmail($code)
+    {
+        $checkToken = $this->userActivationTokenService->checkToken($code);
 
-    //     return $this->responseHelper->successResponse(true, "User Activation!", $checkToken);
-    // }
+        return $this->responseHelper->success(true, "User Activation!", $checkToken);
+    }
 
     // User Login Function
     public function login(Request $request)

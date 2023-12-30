@@ -20,4 +20,17 @@ class UserRepository implements UserRepositoryContract
         return $e->getMessage();
       }
     }
+
+    public function activateUser($userId)
+    {
+      try {
+        $user = User::where(['id' => $userId])->first();
+        $user->email_verified_at = Carbon::now();
+        $user->save();
+  
+        return $user;
+      } catch (\Exception $e) {
+        return $e->getMessage();
+      }
+    }
 }
