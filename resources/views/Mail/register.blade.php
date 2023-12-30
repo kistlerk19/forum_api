@@ -6,5 +6,6 @@
     </head>
     <body class="antialiased">
         <h1>User : {{ $name }}</h1>
+        <h1>Token : {{ $token }}</h1>
     </body>
 </html>

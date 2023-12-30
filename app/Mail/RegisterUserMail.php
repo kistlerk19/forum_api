@@ -16,13 +16,15 @@ class RegisterUserMail extends Mailable
     use Queueable, SerializesModels;
 
     protected $user;
+    protected $token;
 
     /**
      * Create a new message instance.
      */
-    public function __construct( $user)
+    public function __construct($user, $token)
     {
         $this->user = $user;
+        $this->token = $token;
     }
 
     /**
@@ -42,6 +44,7 @@ class RegisterUserMail extends Mailable
                     ->view('mail.register')
                     ->with([
                         'name'=> $this->user->name,
+                        'token'=> $this->token,
                     ]);
     }
 

@@ -10,15 +10,22 @@ use App\Helpers\ResponseHelper;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UserRegisterRequest;
+use App\Services\UserActivationTokenService;
 
 class AuthController extends Controller
 {
     protected $userService;
     protected $responseHelper;
+    protected $userActivationTokenService;
     
-    public function __construct(UserService $userService, ResponseHelper $responseHelper){
+    public function __construct(
+        UserService $userService, 
+        ResponseHelper $responseHelper,
+        UserActivationTokenService $userActivationTokenService,
+    ){
         $this->userService = $userService;
         $this->responseHelper = $responseHelper;
+        $this->userActivationTokenService = $userActivationTokenService;
     }
 
     // Register user Function
@@ -27,22 +34,16 @@ class AuthController extends Controller
         $user = $this->userService->registerUser($request->all());
 
         if ($user){
-            Mail::to($user->email)->send(new RegisterUserMail($user));
+            $token = $this->userActivationTokenService->createNewToken($user->id);
+            // dd($token->token);
+            
+            Mail::to($user->email)->send(new RegisterUserMail($user, $token->token));
 
             return $this->responseHelper->success(true, "Verification Mail Sent.", $user);
         }
 
         return $this->responseHelper->fail(false, "Unauthorised!", 404);
 
-        // $token = $user->createToken("Harsia")->accessToken;
-
-        // $data = [
-        //     "success" => true,
-        //     "user"=> $user,
-        //     "token"=> $token,
-        // ];
-
-        // return $this->responseHelper->success(true, "User created!", $data);
     }
 
     // User Login Function
