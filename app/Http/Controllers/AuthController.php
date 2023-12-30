@@ -28,7 +28,7 @@ class AuthController extends Controller
     ){
         $this->userService = $userService;
         $this->responseHelper = $responseHelper;
-        $this->$passwordResetService = $passwordResetService;
+        $this->passwordResetService = $passwordResetService;
         $this->userActivationTokenService = $userActivationTokenService;
     }
 
@@ -95,12 +95,11 @@ class AuthController extends Controller
         if (!$checkUserEmail) {
             return $this->responseHelper->fail(false, "User email does not exist", 404);
         }
-        dd("we got here");
 
         $passwordResetData = $this->passwordResetService->createPasswordReset($request->email);
-        Mail::to($request->email)->send(new PasswordResetMail($passwordResetData));
+        // Mail::to($request->email)->send(new PasswordResetMail($passwordResetData));
 
-        return $this->responseHelper->success(true, "Check Your Email", $passwordResetData);
+        return $this->responseHelper->success(true, "Check Your Email for ", $passwordResetData);
     }
     public function resetPasswordToken(Request $request)
     {
