@@ -103,23 +103,24 @@ class AuthController extends Controller
 
         return $this->responseHelper->success(true, "Check Your Email for ", $passwordResetData);
     }
-    // public function resetPasswordToken(Request $request)
-    // {
-    //     $checkToken = $this->passwordResetService->checkReset($request->email, $token);
+    public function resetPasswordToken(Request $request, $token)
+    {
+        $checkToken = $this->passwordResetService->checkReset($request->email, $token);
 
-    //     if (!$checkToken) {
-    //         return $this->responseHelper->fail(false, "User email does not exist", 404);
-    //     }
+        if (!$checkToken) {
+            return $this->responseHelper->fail(false, "User email does not exist", 404);
+        }
+        dd($checkToken);
 
-    //     $user = $this->userService->getUserByEmail($request->email);
+        $user = $this->userService->getUserByEmail($request->email);
 
-    //     $user->password = bcrypt($request->password);
-    //     $user->save();
+        $user->password = bcrypt($request->password);
+        $user->save();
 
-    //     $checkToken->delete();   
+        $checkToken->delete();   
 
-    //     return $this->responseHelper->success(true, "Password was successfully changed.", $user);
-    // }
+        return $this->responseHelper->success(true, "Password was successfully changed.", $user);
+    }
 
 
     public function me()

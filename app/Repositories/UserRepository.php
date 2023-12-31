@@ -2,9 +2,9 @@
 
 namespace App\Repositories;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryContract;
-use Carbon\Carbon;
 
 class UserRepository implements UserRepositoryContract
 {
@@ -43,5 +43,10 @@ class UserRepository implements UserRepositoryContract
       } catch (\Exception $e) {
         return $e->getMessage();
       }
+    }
+
+    public function getUserByEmail($email)
+    {
+      return User::where(['email' => $email])->first();
     }
 }
