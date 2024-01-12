@@ -2,22 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserImageUploadRequest;
+use App\Services\ImageUploadService;
 use Illuminate\Http\Request;
 
 class UserFileController extends Controller
 {
-   
-    public function store(Request $request)
-    {
-        dd("we are here");
-    }
+    protected $imageUploadService;
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function __construct(ImageUploadService $imageUploadService)
     {
-        //
+        $this->imageUploadService = $imageUploadService;
+    }
+   
+    public function store(UserImageUploadRequest $request)
+    {
+        $file = $request->file->storeAs(
+            'public/images/' . auth()->user()->id, $request->file->getClientOriginalName()
+        );
+
+        dd($file);
     }
 
     /**
