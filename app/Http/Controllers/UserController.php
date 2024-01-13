@@ -37,7 +37,7 @@ class UserController extends Controller
     
     public function removeFriend($id)
     {
-        $friend = auth()->user()->friends()->detach([$id]);
+        $friend = auth()->user()->friends()->sync([$id]);
 
         return $this->responseHelper->success(true, "Removed new friend!", $friend);
     }
