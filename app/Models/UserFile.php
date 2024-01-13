@@ -18,7 +18,7 @@ class UserFile extends Model
     {
         return [
             "id"=> $this->id,
-            'file_name'=> $this->file_name,
+            'file_path'=> $this->file_name,
             // 'user_id' => $this->user_id,
             'created_at' => $this->created_at,
         ];
