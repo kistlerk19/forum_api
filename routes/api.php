@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserFileController;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -56,4 +57,5 @@ Route::group([
     Route::get("me", [UserController::class,"me"]);
     Route::post("status/new", [StatusController::class,"store"]);
     Route::post("image-upload", [UserFileController::class,"store"]);
+    Route::get("add-friend/{id}", [UserController::class, "newFriend"]);
 });

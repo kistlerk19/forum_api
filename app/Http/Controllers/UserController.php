@@ -19,12 +19,19 @@ class UserController extends Controller
     {
         $user = Auth::user();
 
-        $this->responseHelper->success(true, "This is the user!", $user);
+        // $this->responseHelper->success(true, "This is the user!", $user);
 
         // $user = User::with("statuses")->find($user_id);
 
         // $status = $user->statuses()->get();
 
         return $this->responseHelper->success(true, "This is the user!", $user);
+    }
+
+    public function newFriend($id)
+    {
+        $addFriend = auth()->user()->friends()->attach([$id]);
+
+        return $this->responseHelper->success(true, "Added new friend!", $addFriend);
     }
 }
