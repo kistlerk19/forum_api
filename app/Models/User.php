@@ -70,8 +70,6 @@ class User extends Authenticatable
             'username'=> $this->username,
             'email'=> $this->email,
             'created_at' => $this->created_at,
-            'images' => $this->images,
-            'friends'=> $this->friends,
         ];
     }
 }

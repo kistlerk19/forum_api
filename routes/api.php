@@ -57,6 +57,6 @@ Route::group([
     Route::get("me", [UserController::class,"me"]);
     Route::post("status/new", [StatusController::class,"store"]);
     Route::post("image-upload", [UserFileController::class,"store"]);
-    Route::get("add-friend/{id}", [UserController::class, "newFriend"]);
-    Route::get("unfriend/{id}", [UserController::class, "removeFriend"]);
+    Route::get("friend/{id}", [UserController::class, "toggleFriend"]);
+    Route::get("friends", [UserController::class, "getFriends"]);
 });

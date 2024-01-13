@@ -28,17 +28,25 @@ class UserController extends Controller
         return $this->responseHelper->success(true, "This is the user!", $user);
     }
 
-    public function newFriend($id)
+    public function toggleFriend($id)
     {
-        $addFriend = auth()->user()->friends()->attach([$id]);
+        $friend = auth()->user()->friends();
 
-        return $this->responseHelper->success(true, "Added new friend!", $addFriend);
+        if ($friend->find($id))
+        {
+            $friend->detach($id);
+            return $this->responseHelper->success(true, "Removed friend!", []);
+        }
+
+        $friend->attach([$id]);
+
+        return $this->responseHelper->success(true, "Added new friend!", $friend);
     }
-    
-    public function removeFriend($id)
-    {
-        $friend = auth()->user()->friends()->sync([$id]);
 
-        return $this->responseHelper->success(true, "Removed new friend!", $friend);
+    public function getFriends()
+    {
+        $friends = auth()->user()->friends()->get();
+
+        return $this->responseHelper->success(true, "All friends!", $friends);
     }
 }
