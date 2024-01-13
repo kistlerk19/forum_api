@@ -51,4 +51,21 @@ class User extends Authenticatable
     {
         return $this->hasMany(Status::class);
     }
+
+    public function images()
+    {
+        return $this->hasMany(UserFile::class);
+    }
+
+    public function toArray()
+    {
+        return [
+            'id'=> $this->id,
+            'name'=> $this->name,
+            'username'=> $this->username,
+            'email'=> $this->email,
+            'created_at' => $this->created_at,
+            'images' => $this->images,
+        ];
+    }
 }
