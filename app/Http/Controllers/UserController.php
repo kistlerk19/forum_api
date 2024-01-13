@@ -34,4 +34,11 @@ class UserController extends Controller
 
         return $this->responseHelper->success(true, "Added new friend!", $addFriend);
     }
+    
+    public function removeFriend($id)
+    {
+        $friend = auth()->user()->friends()->detach([$id]);
+
+        return $this->responseHelper->success(true, "Removed new friend!", $friend);
+    }
 }
