@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Repositories\ImageRepositoryContract;
 use Illuminate\Support\Facades\Auth;
+use App\Repositories\Contracts\ImageRepositoryContract;
 
 
 class ImageUploadService
@@ -15,6 +15,11 @@ class ImageUploadService
     )
     {
         $this->imageRepositoryContract = $imageRepositoryContract;
+    }
+
+    public function upload($file)
+    {
+       return $this->imageRepositoryContract->upload($file);
     }
 
 }

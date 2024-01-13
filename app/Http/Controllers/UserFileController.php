@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserImageUploadRequest;
-use App\Services\ImageUploadService;
+use App\Helpers\ResponseHelper;
 use Illuminate\Http\Request;
+use App\Services\ImageUploadService;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\UserImageUploadRequest;
 
 class UserFileController extends Controller
 {
     protected $imageUploadService;
+    protected $responseHelper;
 
-    public function __construct(ImageUploadService $imageUploadService)
+    public function __construct(ImageUploadService $imageUploadService, ResponseHelper $responseHelper)
     {
         $this->imageUploadService = $imageUploadService;
+        $this->responseHelper = $responseHelper;
     }
    
     public function store(UserImageUploadRequest $request)
@@ -21,7 +25,9 @@ class UserFileController extends Controller
             'public/images/' . auth()->user()->id, $request->file->getClientOriginalName()
         );
 
-        dd($file);
+        $this->imageUploadService->upload($file);
+
+        return $this->responseHelper->success(true, "image Uploaded!", null);
     }
 
     /**

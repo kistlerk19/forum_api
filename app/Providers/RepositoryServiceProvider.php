@@ -12,7 +12,7 @@ use App\Repositories\Contracts\UserRepositoryContract;
 use App\Repositories\Contracts\StatusRepositoryContract;
 use App\Repositories\Contracts\UserActivationTokenRepositoryContract;
 use App\Repositories\ImageRepository;
-use App\Repositories\ImageRepositoryContract;
+use App\Repositories\Contracts\ImageRepositoryContract;
 use App\Repositories\PasswordResetRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
